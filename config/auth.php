@@ -40,6 +40,11 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'api' => [
+            'driver' => 'token',
+            'provider' => 'users',
+            'hash' => true,
+        ],
     ],
 
     /*
@@ -66,6 +71,8 @@ return [
         ],
     
     
+    
+    
 
         // 'users' => [
         //     'driver' => 'database',
@@ -73,6 +80,7 @@ return [
         // ],
     ],
 
+   
     /*
     |--------------------------------------------------------------------------
     | Resetting Passwords

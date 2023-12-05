@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\WelcomeController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -13,10 +15,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-Route::get('/test-config', function () {
-    dd(config('cloudinary'));
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+// Route::get('/test-config', function () {
+//     dd(config('cloudinary'));
+// });
 
+
+Route::get('/', [WelcomeController::class, 'index']);

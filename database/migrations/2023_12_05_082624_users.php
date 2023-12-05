@@ -26,6 +26,11 @@ return new class extends Migration
             $table->string('remember_token', 100)->nullable();
             $table->timestamps();
         });
+
+        // Add the api_token column separately
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('api_token', 80)->unique()->nullable()->default(null)->after('password');
+        });
     }
 
     /**
@@ -35,6 +40,6 @@ return new class extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('users');
     }
 };

@@ -3,17 +3,11 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\UsersModel as User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Log;
-use Cloudinary\Uploader;
-use Tymon\JWTAuth\Facades\JWTAuth;
-
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class UsersController extends Controller
-
 {
     public function index()
     {
@@ -32,87 +26,6 @@ class UsersController extends Controller
             'message' => 'All users retrieved successfully.',
         ];
         return response()->json($data, 200);
-    }
-
-    public function addUser(Request $request)
-    {
-        try {
-            $validator = Validator::make($request->all(), [
-                'first_name' => 'required',
-                'last_name' => 'required',
-                'email' => 'required|email|unique:users,email',
-                'password' => 'required|min:8',
-                'confirm_password' => 'required|same:password',
-                'role' => 'required',
-                'profile_picture' => 'image|mimes:jpeg,png,jpg,gif|max:2048', 
-            ]);
-
-            if ($validator->fails()) {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Validation error.',
-                    'errors' => $validator->errors(),
-                ], 400);
-            }
-
-            if (User::where('email', $request->email)->exists()) {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'User with this email already exists',
-                ], 400);
-            }
-
-            $hashedPassword = Hash::make($request->password);
-
-            if ($request->hasFile('profile_picture')) {
-                $uploadedFile = $request->file('profile_picture');
-                $path = $uploadedFile->store('profile_pictures', 'public');
-
-                $user = User::create([
-                    'first_name' => $request->first_name,
-                    'last_name' => $request->last_name,
-                    'email' => $request->email,
-                    'password' => $hashedPassword,
-                    'confirm_password' => $request->confirm_password,
-                    'address' => $request->address,
-                    'role' => $request->role,
-                    'status' => 'enabled',
-                    'avatar' => $path, 
-                    'profile_picture' => Storage::url($path),
-                ]);
-            } else {
-                $user = User::create([
-                    'first_name' => $request->first_name,
-                    'last_name' => $request->last_name,
-                    'email' => $request->email,
-                    'password' => $hashedPassword,
-                    'confirm_password' => $request->confirm_password,
-                    'address' => $request->address,
-                    'role' => $request->role,
-                    'avatar' => 'default.png',
-                    'status' => 'enabled',
-                ]);
-            }
-
-            return response()->json([
-                'status' => true,
-                'message' => 'User added successfully',
-                'user' => $user,
-            ], 201);
-
-        } catch (\Exception $e) {
-            \Illuminate\Support\Facades\Log::error('Error adding user: ' . $e->getMessage());
-            \Illuminate\Support\Facades\Log::error('File: ' . $e->getFile());
-            \Illuminate\Support\Facades\Log::error('Line: ' . $e->getLine());
-        
-            return response()->json([
-                'status' => false,
-                'message' => 'An error occurred while adding the user',
-                'error' => $e->getMessage(),
-            ], 500);
-        }
-        
-        
     }
     public function show($id)
     {
@@ -242,43 +155,7 @@ class UsersController extends Controller
         ];
         return response()->json($data, 200);
     }
-
-    public function login(Request $request)
-{
-    $validator = Validator::make($request->all(), [
-        'email' => 'required',
-        'password' => 'required',
-    ]);
-
-    if ($validator->fails()) {
-        $data = [
-            'status' => 400,
-            'message' => 'Validation error.',
-            'errors' => $validator->errors(),
-        ];
-        return response()->json($data, 400);
-    }
-
-    $credentials = $request->only('email', 'password');
-
-    if (!$token = JWTAuth::attempt($credentials)) {
-        $data = [
-            'status' => 401,
-            'message' => 'Invalid credentials.',
-        ];
-        return response()->json($data, 401);
-    }
-
-    $user = auth()->user();
-
-    $data = [
-        'status' => 200,
-        'user' => $user,
-        'token' => $token,
-        'message' => 'User logged in successfully.',
-    ];
-    return response()->json($data, 200);
-}
+ 
     public function logout()
     {
         $data = [
@@ -288,86 +165,7 @@ class UsersController extends Controller
         return response()->json($data, 200);
     }
 
-    public function resetPassword(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'email' => 'required',
-
-        ]);
-
-        if ($validator->fails()) {
-            $data = [
-                'status' => 400,
-                'message' => 'Validation error.',
-                'errors' => $validator->errors(),
-            ];
-            return response()->json($data, 400);
-        }
-
-        $user = User::where('email', $request->email)->first();
-        if (!$user) {
-            $data = [
-                'status' => 404,
-                'message' => 'User not found.',
-            ];
-            return response()->json($data, 404);
-        }
-
-        $data = [
-            'status' => 200,
-            'message' => 'Password reset link sent successfully.',
-        ];
-        return response()->json($data, 200);
-    }
-
-    public function resetPasswordConfirm(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'password' => 'required',
-            'confirm_password' => 'required|same:password',
-
-        ]);
-
-        if ($validator->fails()) {
-            $data = [
-                'status' => 400,
-                'message' => 'Validation error.',
-                'errors' => $validator->errors(),
-            ];
-            return response()->json($data, 400);
-        }
-
-        $data = [
-            'status' => 200,
-            'message' => 'Password reset successfully.',
-        ];
-        return response()->json($data, 200);
-    }
-
-    public function changePassword(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'old_password' => 'required',
-            'password' => 'required',
-            'confirm_password' => 'required|same:password',
-
-        ]);
-
-        if ($validator->fails()) {
-            $data = [
-                'status' => 400,
-                'message' => 'Validation error.',
-                'errors' => $validator->errors(),
-            ];
-            return response()->json($data, 400);
-        }
-
-        $data = [
-            'status' => 200,
-            'message' => 'Password changed successfully.',
-        ];
-        return response()->json($data, 200);
-    }
+  
 
     public function updateProfile(Request $request)
     {
