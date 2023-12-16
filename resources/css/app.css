@@ -1,0 +1,49 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import "node_modules/font-awesome/scss/font-awesome.scss";  
+.icon-badge {
+  position: absolute;
+  top: -14px;
+  right: -12px;
+  background-color: red;
+  height: 18px;
+  width: 18px;
+  text-align: center;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  color: white;
+  border-radius: 50%;
+  font-size: x-small;
+}
+
+.icon-container {
+    position: relative;
+  }
+
+  
+
+body {
+    overflow-y: scroll;
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+  }
+  
+  body::-webkit-scrollbar {
+    width: 0.5px; 
+    background-color: transparent;
+  }
+  
+  body::-webkit-scrollbar-thumb {
+    background-color: transparent; 
+  }
+  
+  body::-webkit-scrollbar-track {
+    background-color: transparent; 
+  }
+  body{
+    background-color: rgb(211, 213, 213);
+  }
+  

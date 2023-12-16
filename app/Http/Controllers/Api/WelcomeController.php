@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
+use Spatie\FlareClient\Api;
 
-class WelcomeController extends Controller
+class WelcomeController extends Api
 {
     public function index()
     {

@@ -120,6 +120,17 @@ class AuthController extends Controller
         return response($response, 201);
     }
 
+    
+    // Other methods...
+
+    public function showLoginForm()
+    {
+        return view('login');
+    }
+     public function showRegisterForm(){
+        return view('register');
+     }
+
     public function resetPassword(Request $request)
 {
     $validator = Validator::make($request->all(), [
