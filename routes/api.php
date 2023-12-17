@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\ShopController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Controller;
 
 
 //public routes
@@ -16,6 +17,7 @@ Route::post('/cat', [CategoryController::class, 'addCategory']);
 Route::get('/cat', [CategoryController::class, 'getCategories']);
 Route::get('/cat/{id}', [CategoryController::class, 'getCategory']);
 Route::get('/shop', [ShopController::class, 'getShops']);
+Route::post('/upload_image', [Controller::class, 'uploadImage']);
 
 //protected routes
 Route::group(['middleware' => ['auth:sanctum']], function () {

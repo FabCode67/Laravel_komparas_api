@@ -11,6 +11,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Check if a file is selected
         if (selectedFile) {
+            // Validate file type
+            const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif'];
+            if (!allowedTypes.includes(selectedFile.type)) {
+                alert('Invalid file type. Please select a valid image file.');
+                // Reset the file input to clear the selected file
+                fileInput.value = '';
+                return;
+            }
+
             // Update the image preview with the selected image
             imagePreview.style.backgroundImage = `url(${URL.createObjectURL(selectedFile)})`;
             imagePreview.style.backgroundSize = 'cover';
@@ -22,3 +31,4 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
+

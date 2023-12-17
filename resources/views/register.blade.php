@@ -19,7 +19,9 @@
             </div>
             <div class=" laptop:basis-[55%] desktop:basis-[55%] basis-[100%] text-grey-900 flex justify-center m-auto">
                 <div class="form w-[80%]">
-                    <form class="felx flex-col space-y-10" data-testid="login-form" action="{{ route('welcome') }}"
+
+                    <form class="flex flex-col space-y-10" data-testid="signup-form" id="signupForm" action="{{ route('register') }}"
+                        method="POST" enctype="multipart/form-data">
                         method="POST">
                         @csrf
                         <div class="flex justify-center m-auto">
@@ -106,7 +108,7 @@
                             <div class="input-field">
                                 <button data-testid="login-button"
                                     class="bg-blue-700 text-white rounded-md p-2 h-[54px] w-full" type="submit">
-                                    Login
+                                    Signup
                                 </button>
                                 <div class="flex justify-between mt-4">
 
@@ -121,9 +123,7 @@
             </div>
         </div>
     </div>
-
     <script type="module" src="{{ mix('resources/js/signup.js') }}"></script>
-
 </body>
 
 </html>

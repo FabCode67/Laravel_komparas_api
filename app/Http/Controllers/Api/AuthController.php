@@ -13,6 +13,8 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ResetPasswordMail;
 use Illuminate\Support\Facades\Log;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary; // Import Cloudinary facade
+
 
 class AuthController extends Controller
 {
@@ -25,8 +27,9 @@ class AuthController extends Controller
                 'email' => 'required|email|unique:users,email',
                 'password' => 'required|min:8',
                 'confirm_password' => 'required|same:password',
-                'role' => 'required',
-                'profile_picture' => 'image|mimes:jpeg,png,jpg,gif|max:2048', 
+                'role' => 'optional',
+                'address' => 'optional',
+                'profile_picture' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
             ]);
 
             if ($validator->fails()) {
@@ -47,21 +50,26 @@ class AuthController extends Controller
             $hashedPassword = Hash::make($request->password);
 
             if ($request->hasFile('profile_picture')) {
+                // Upload profile picture to Cloudinary
                 $uploadedFile = $request->file('profile_picture');
-                $path = $uploadedFile->store('profile_pictures', 'public');
+                $cloudinaryResponse = Cloudinary::upload($uploadedFile->getRealPath());
+                $cloudinaryUrl = $cloudinaryResponse->getSecurePath();
+
+                // Save user with Cloudinary URL
                 $user = User::create([
                     'first_name' => $request->first_name,
                     'last_name' => $request->last_name,
                     'email' => $request->email,
                     'password' => $hashedPassword,
                     'confirm_password' => $request->confirm_password,
-                    'address' => $request->address,
-                    'role' => $request->role,
+                    'address' => 'default',
+                    'role' => 'buyer',
                     'status' => 'enabled',
-                    'avatar' => $path, 
-                    'profile_picture' => Storage::url($path),
+                    'avatar' => $cloudinaryUrl,
+                    'profile_picture' => $cloudinaryUrl,
                     'api_token' => Str::random(60),
                 ]);
+
                 $token = $user->createToken('myapptoken')->plainTextToken;
 
             } else {
@@ -77,8 +85,8 @@ class AuthController extends Controller
                     'status' => 'enabled',
                     'api_token' => Str::random(60),
                 ]);
-                $token = $user->createToken('myapptoken')->plainTextToken;
 
+                $token = $user->createToken('myapptoken')->plainTextToken;
             }
 
             return response()->json([
@@ -88,11 +96,15 @@ class AuthController extends Controller
                 'token'=> $token
             ], 201);
 
+            return redirect()->route('login')->with('success', 'User added successfully. Please log in.'); // Assuming you have a named route for your login page
+
+
         } catch (\Exception $e) {
-           Log::error('Error adding user: ' . $e->getMessage());
-           Log::error('File: ' . $e->getFile());
-           Log::error('Line: ' . $e->getLine());
-        
+            Log::error('Error adding user: ' . $e->getMessage());
+            Log::error('File: ' . $e->getFile());
+            Log::error(''. $e->getLine());
+            Log::error('Line: ' . $e->getLine());
+
             return response()->json([
                 'status' => false,
                 'message' => 'An error occurred while adding the user',
@@ -100,7 +112,9 @@ class AuthController extends Controller
             ], 500);
         }
     }
-  
+    public function showRegisterForm(){
+        return view('register');
+     }
     public function login(Request $request) {
         $fields = $request->validate([
             'email' => 'required|string',
@@ -127,9 +141,7 @@ class AuthController extends Controller
     {
         return view('login');
     }
-     public function showRegisterForm(){
-        return view('register');
-     }
+   
 
     public function resetPassword(Request $request)
 {
