@@ -10,7 +10,7 @@ use App\Http\Controllers\Controller;
 
 //public routes
 Route::post('/users', [AuthController::class, 'addUser']);
-Route::post('/users/login', [AuthController::class, 'login']);
+Route::post('/login', [AuthController::class, 'login']);
 Route::get('/users', [UsersController::class, 'index']);
 Route::post('/reset', [AuthController::class, 'resetPassword']);
 Route::post('/cat', [CategoryController::class, 'addCategory']);
@@ -18,6 +18,8 @@ Route::get('/cat', [CategoryController::class, 'getCategories']);
 Route::get('/cat/{id}', [CategoryController::class, 'getCategory']);
 Route::get('/shop', [ShopController::class, 'getShops']);
 Route::post('/upload_image', [Controller::class, 'uploadImage']);
+//logout
+Route::post('/logout', [AuthController::class, 'logout']);
 
 //protected routes
 Route::group(['middleware' => ['auth:sanctum']], function () {

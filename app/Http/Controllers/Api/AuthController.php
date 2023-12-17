@@ -11,6 +11,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Session;
+
 use App\Mail\ResetPasswordMail;
 use Illuminate\Support\Facades\Log;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary; // Import Cloudinary facade
@@ -116,33 +118,49 @@ class AuthController extends Controller
     public function showRegisterForm(){
         return view('register');
      }
-    public function login(Request $request) {
+     public function login(Request $request) {
         $fields = $request->validate([
             'email' => 'required|string',
             'password' => 'required|string'
         ]);
+    
         $user = UsersModel::where('email', $fields['email'])->first();
-        if(!$user || !Hash::check($fields['password'], $user->password)) {
-            return response([
-                'message' => 'Bad creds'
-            ], 401);
+    
+        if (!$user || !Hash::check($fields['password'], $user->password)) {
+            return redirect('/login');
         }
+    
         $token = $user->createToken('myapptoken')->plainTextToken;
+    
+        // Store user response and token in the session
+        Session::put('user', $user);
+        Session::put('token', $token);
+    
         $response = [
             'user' => $user,
             'token' => $token
         ];
-        return response($response, 201);
-    }
-
     
-    // Other methods...
-
+        if($user->role == 'admin'){
+            return redirect('/admin');
+        }else{
+            return redirect('/');
+        }
+    }
     public function showLoginForm()
     {
         return view('login');
     }
-   
+ 
+
+    public function logout(Request $request)
+    {
+     Session::forget('user');
+        Session::forget('token');
+        return redirect('/login');
+    }
+    
+    
 
     public function resetPassword(Request $request)
 {
