@@ -7,10 +7,13 @@
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/fontawesome.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css" />
+    
     @vite('resources/css/app.css')
 </head>
 
 <body class="bg-gray-100 w-full">
+<livewire:toasts />
+
     <div class="h-screen relative w-full">
 
         <div class="flex basis-full min-h-screen relative">
@@ -20,9 +23,7 @@
             <div class=" laptop:basis-[55%] desktop:basis-[55%] basis-[100%] text-grey-900 flex justify-center m-auto">
                 <div class="form w-[80%]">
 
-                    <form class="flex flex-col space-y-10" data-testid="signup-form" id="signupForm" action="{{ route('register') }}"
-                        method="POST" enctype="multipart/form-data">
-                        method="POST">
+                <form data-register-url="{{ route('register') }}" class="flex flex-col space-y-10" data-testid="signup-form" id="signupForm" action="{{ route('register') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="flex justify-center m-auto">
                             <a href="{{ route('welcome') }}">

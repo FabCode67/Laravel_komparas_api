@@ -31,4 +31,35 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
+document.addEventListener('DOMContentLoaded', function () {
+    const signupForm = document.getElementById('signupForm');
+    const registerUrl = signupForm.dataset.registerUrl; // Access the data attribute
 
+    signupForm.addEventListener('submit', async function (event) {
+        event.preventDefault();
+
+        const formData = new FormData(signupForm);
+
+        try {
+            const response = await fetch(registerUrl, {
+                method: 'POST',
+                body: formData,
+            });
+
+            const responseData = await response.json();
+
+            if (responseData.status) {
+                console.log(responseData.message);
+                alert(responseData.message);
+                setTimeout(() => {
+                    window.location.href = `{{ route('login') }}`;
+                }, 2000);
+            } else {
+                // Handle other scenarios if needed
+                alert(responseData.message);
+            }
+        } catch (error) {
+            console.error('An error occurred:', error);
+        }
+    });
+});

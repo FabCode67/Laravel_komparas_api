@@ -93,11 +93,12 @@ class AuthController extends Controller
                 'status' => true,
                 'message' => 'User added successfully',
                 'user' => $user,
-                'token'=> $token
+                'token'=> $token,
             ], 201);
 
-            return redirect()->route('login')->with('success', 'User added successfully. Please log in.'); // Assuming you have a named route for your login page
-
+            // Remove the unreachable code block
+            // toast()
+            //     ->success('You earned a cookie! 🍪');
 
         } catch (\Exception $e) {
             Log::error('Error adding user: ' . $e->getMessage());
