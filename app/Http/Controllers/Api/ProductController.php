@@ -88,7 +88,6 @@ class ProductController extends Controller
             ], 500);
         }
     }
-
     public function getProducts(Request $request)
     {
         try {
@@ -106,7 +105,38 @@ class ProductController extends Controller
                 'message' => 'Server error'
             ], 500);
         }
+    }
+    
 
-}
+    public function showHomeProduct(Request $request)
+    {
+        try {
+            $response = $this->getProducts($request);
+    
+            // Check if the response has the 'status' key and it's true
+            if ($response->original['status'] && isset($response->original['products'])) {
+                $products = $response->original['products']; // Remove ['products'] here
+                return view('welcome', compact('products'));
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'No products found',
+                ], 404);
+            }
+        } catch (\Exception $e) {
+            Log::error($e);
+    
+            return response()->json([
+                'status' => false,
+                'message' => 'Server error'
+            ], 500);
+        }
+    }
+    
+    
+
+
+    
+
 
 }
