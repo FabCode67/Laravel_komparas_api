@@ -2,10 +2,12 @@
 
 use App\Http\Controllers\Api\UsersController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\ShopController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Controller;
+
 
 
 //public routes
@@ -16,8 +18,11 @@ Route::post('/reset', [AuthController::class, 'resetPassword']);
 Route::post('/cat', [CategoryController::class, 'addCategory']);
 Route::get('/cat', [CategoryController::class, 'getCategories']);
 Route::get('/cat/{id}', [CategoryController::class, 'getCategory']);
-Route::get('/shop', [ShopController::class, 'getShops']);
+Route::get('/shops', [ShopController::class, 'getShops']);
+Route::post('/shops/add', [ShopController::class, 'createShop']);
 Route::post('/upload_image', [Controller::class, 'uploadImage']);
+Route::get('/products', [ProductController::class, 'getProducts']);
+Route::post('/products/add', [ProductController::class, 'addProduct']);
 //logout
 Route::post('/logout', [AuthController::class, 'logout']);
 

@@ -8,14 +8,16 @@ use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Shop extends Authenticatable
+class Products extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
-
     protected $fillable = [
         'name',
-        'location',
-        'working_hours',
+        'description',
+        'price',
+        'category_id',
+        'shop_id',
+        'image',
     ];
-
+    
 }

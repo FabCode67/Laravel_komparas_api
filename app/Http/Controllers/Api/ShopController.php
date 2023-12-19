@@ -5,45 +5,60 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use App\Models\Shop;
+use App\Models\Shops;
+use Illuminate\Support\Facades\Validator;
+
 
 
 class ShopController extends Controller
 {
     public function createShop(Request $request){
         try{
-            $request->validate([
+        
+            $validator = Validator::make($request->all(), [
                 'name' => 'required|string',
                 'location' => 'required|string',
                 'working_hours' => 'required|string',
+                'phone' => 'required|string',
+                'email' => 'required|string',
+                'description' => 'required|string',
             ]);
 
-            $shop = Shop::create($request->only('name','location',
-            'working_hours'));
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Validation error.',
+                    'errors' => $validator->errors(),
+                ], 400);
+            }
+
+            $shops = Shops::create($request->only('name','location',
+            'working_hours','phone','email','description'));
             return response()->json([
                 'message' => 'Shop created successfully',
-                'shop' => $shop
+                'shop' => $shops
             ], 201);
         }catch(\Exception $e){
             Log::error($e);
             return response()->json([
-                'message' => 'Server error'
+                'status'=> false,
+                'message'=> $e->getMessage(),
             ], 500);
         }
     }
 
     public function getShops(Request $request){
         try{
-            $shops = Shop::all();
+            $shop = Shops::all();
             return response()->json([
                 'message' => 'Shops retrieved successfully',
-                'shops' => $shops
+                'shops' => $shop
             ], 200);
         
-            if($shops->count() > 0){
+            if($shop->count() > 0){
                 return response()->json([
                     'message' => 'Shops retrieved successfully',
-                    'shops' => $shops
+                    'shop' => $shop
                 ], 200);
             }else{
                 return response()->json([
@@ -64,9 +79,12 @@ class ShopController extends Controller
                 'name' => 'required|string',
                 'location' => 'required|string',
                 'working_hours' => 'required|string',
+                'phone' => 'required|string',
+                'email' => 'required|string',
+                'description' => 'required|string',
             ]);
 
-            $shop = Shop::find($request->id);
+            $shop = Shops::find($request->id);
             if(!$shop){
                 return response()->json([
                     'message' => 'Shop not found'
@@ -76,7 +94,7 @@ class ShopController extends Controller
             'working_hours'));
             return response()->json([
                 'message' => 'Shop updated successfully',
-                'shop' => $shop
+                'shops' => $shop
             ], 200);
         }catch(\Exception $e){
             Log::error($e);
@@ -87,7 +105,7 @@ class ShopController extends Controller
     }
     public function deleteShop(Request $request){
         try{
-            $shop = Shop::find($request->id);
+            $shop = Shops::find($request->id);
             if(!$shop){
                 return response()->json([
                     'message' => 'Shop not found'
