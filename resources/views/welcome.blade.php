@@ -9,9 +9,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css" />
   @vite('resources/css/app.css')
 </head>
-
 <body>
-
   @include('components.navbar')
   @include('components.home')
   <div
@@ -38,9 +36,7 @@
       </button>
     </div>
   </div>
-
- 
-
+  @include('homec')
   @include('homep')
   @include('components.footer')
   <script type="module" src="{{ mix('resources/js/home.js') }}"></script>

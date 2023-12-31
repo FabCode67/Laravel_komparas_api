@@ -7,14 +7,13 @@ use App\Models\Products as Product;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Session;
+use App\Models\Category;
+use App\Models\Shops;
 
 use App\Mail\ResetPasswordMail;
 use Illuminate\Support\Facades\Log;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary; // Import Cloudinary facade
+
 
 
 class ProductController extends Controller
@@ -52,7 +51,6 @@ class ProductController extends Controller
                 $cloudinaryResponse = Cloudinary::upload($uploadedFile->getRealPath());
                 $cloudinaryUrl = $cloudinaryResponse->getSecurePath();
 
-                // Save user with Cloudinary URL
                 $product = new Product([
                     'name' => $request->name,
                     'price' => $request->price,
@@ -106,16 +104,74 @@ class ProductController extends Controller
             ], 500);
         }
     }
-    
+    public function showHomeProductAndCategories1(Request $request)
+    {
+        try {
+            $categories = Category::all();
+            $products = Product::all();
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Categories and products retrieved successfully',
+                'categories' => $categories,
+                'products' => $products
+            ], 200);
+        } catch (\Exception $e) {
+            Log::error($e);
+
+            return response()->json([
+                'status' => false,
+                'message' => 'Server error'
+            ], 500);
+        }
+    }
+
+
+    public function showHomeProductAndCategories(Request $request)
+    {
+        try {
+            $categories = Category::all();
+            $products = Product::all();
+        } catch (\Exception $e) {
+            Log::error($e);
+
+            return response()->json([
+                'status' => false,
+                'message' => 'Server error'
+            ], 500);
+        }
+    }
+
+    public function getCategories(Request $request)
+    {
+        try {
+            $products = $this->getProducts($request);
+            $categories = $this->getCategories($request);
+            if ($products->original['status'] && isset($products->original['products'])) {
+                $products = $products->original['products'];
+                $categories = $categories->original['categories'];
+                return view('welcome', compact('products', 'categories'));
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'No products found',
+                ], 404);
+            }
+
+        } catch (\Exception $e) {
+            Log::error($e);
+
+
+            return response()->json(['message' => 'Server error'], 500);
+        }
+    }
 
     public function showHomeProduct(Request $request)
     {
         try {
             $response = $this->getProducts($request);
-    
-            // Check if the response has the 'status' key and it's true
             if ($response->original['status'] && isset($response->original['products'])) {
-                $products = $response->original['products']; // Remove ['products'] here
+                $products = $response->original['products'];
                 return view('welcome', compact('products'));
             } else {
                 return response()->json([
@@ -125,18 +181,90 @@ class ProductController extends Controller
             }
         } catch (\Exception $e) {
             Log::error($e);
-    
+
             return response()->json([
                 'status' => false,
                 'message' => 'Server error'
             ], 500);
         }
     }
-    
-    
+
+    public function showHomeProductAndCat(Request $request)
+    {
+        try {
+            $response = $this->showHomeProductAndCategories1($request);
+            if ($response->original['status'] && isset($response->original['products'])) {
+                $products = $response->original['products'];
+                return view('welcome', compact('products'));
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'No products found',
+                ], 404);
+            }
+        } catch (\Exception $e) {
+            Log::error($e);
+
+            return response()->json([
+                'status' => false,
+                'message' => 'Server error'
+            ], 500);
+        }
+    }
 
 
-    
+    public function getSingleProduct(Request $request, $id)
+    {
+        try {
+            $product = Product::find($id);
+            $shopId = $product->shop_id;
+            $shop = Shops::find($shopId);
+            $categoryId = $product->category_id;
+            $categoryProducts = Product::where('category_id', $categoryId)->get();
+            if (!$product) {
+                return response()->json(['message' => 'Product not found'], 404);
+            }
+            return response()->json(['status'=>true, 'message' => 'Product retrieved successfully','shop' => $shop, 'categoryProduct' =>$categoryProducts, 'product' => $product], 200);
+        } catch (\Exception $e) {
+            Log::error($e);
+
+            return response()->json(['message' => 'Server error'], 500);
+        }
+    }
+    public function showSingleProductPage(Request $request, $id)
+    {
+        try {
+            $request->route('id');
+            $id = $request->route('id');
+            $response = $this->getSingleProduct($request, $id);
+            $shop = $response->original['shop'];
+            $categoryId = $response->original['product']['category_id'];
+            $categoryProducts = Product::where('category_id', $categoryId)->get();
+            if ($response->original['status']) {
+                $product = $response->original['product'];
+                return view('singleProductPage', compact('product','shop', 'categoryProducts'));
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'No product found',
+                ], 404);
+            }
+        } catch (\Exception $e) {
+            Log::error($e);
+            return response()->json([
+                'status' => false,
+                'message' => 'Server error'
+            ], 500);
+        }
+    }
+
+
+
+
+
+
+
+
 
 
 }

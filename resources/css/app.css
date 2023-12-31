@@ -43,6 +43,18 @@ body {
   body::-webkit-scrollbar-track {
     background-color: transparent; 
   }
+  .categoriesHorizontalMenu::-webkit-scrollbar {
+    width: 0.5px; 
+    background-color: transparent;
+  }
+  
+  .categoriesHorizontalMenu::-webkit-scrollbar-thumb {
+    background-color: transparent; 
+  }
+  
+  .categoriesHorizontalMenu::-webkit-scrollbar-track {
+    background-color: transparent; 
+  }
   body{
     background-color: rgb(211, 213, 213);
   }

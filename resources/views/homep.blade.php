@@ -1,9 +1,12 @@
 
 
+
+
 <div class='w-full px-3 h-fit flex flex-col'>
-    <div class='productCard grid desktop:grid-cols-5 laptop:grid-cols-5 tablet:grid-cols-3 grid-cols-2 gap-6 mt-7 mb-7'>
+    <div class='productCard grid desktop:grid-cols-5 laptop:grid-cols-5 tablet:grid-cols-3 grid-cols-2 gap-6 mt-2 mb-7'>
         @foreach ($products as $product)
-            <a href="" class='productCard1 min-h-[20rem] h-fit   w-full flex flex-col'>
+            <a href='/product/{{ $product['id'] }}' 
+             class='productCard1 min-h-[20rem] h-fit   w-full flex flex-col'>
                 <div class='productCard1Img h-[10rem] bg-white w-full'>
                     <img src="{{ $product['image'] }}" alt='product' class='w-full h-full object-cover' />
                 </div>
@@ -16,4 +19,6 @@
         @endforeach
     </div>
 </div>
+
+
 

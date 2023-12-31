@@ -15,13 +15,17 @@ Route::post('/users', [AuthController::class, 'addUser']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/users', [UsersController::class, 'index']);
 Route::post('/reset', [AuthController::class, 'resetPassword']);
-Route::post('/cat', [CategoryController::class, 'addCategory']);
-Route::get('/cat', [CategoryController::class, 'getCategories']);
-Route::get('/cat/{id}', [CategoryController::class, 'getCategory']);
+Route::post('/categories', [CategoryController::class, 'addCategory']);
+Route::get('/categories', [ProductController::class, 'getCategories']);
+Route::get('/categories/{id}', [CategoryController::class, 'getCategory']);
 Route::get('/shops', [ShopController::class, 'getShops']);
 Route::post('/shops/add', [ShopController::class, 'createShop']);
 Route::post('/upload_image', [Controller::class, 'uploadImage']);
 Route::get('/products', [ProductController::class, 'getProducts']);
+Route::get('/product/{id}', [ProductController::class, 'getSingleProduct']);
+Route::get('/productsAndCat', [ProductController::class, 'showHomeProductAndCategories1']);
+
+
 Route::post('/products/add', [ProductController::class, 'addProduct']);
 //logout
 Route::post('/logout', [AuthController::class, 'logout']);
@@ -34,7 +38,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::delete('users/{id}', [UsersController::class, 'destroy']);
     Route::get('users/search/{name}', [UsersController::class, 'search']);
     Route::get('user/profile', [UsersController::class, 'profile']);
-    Route::post('/cat', [CategoryController::class, 'addCategory']);
+    Route::post('/categories', [CategoryController::class, 'addCategory']);
     Route::post('/shop', [ShopController::class, 'createShop']);
     Route::put('/shop/{id}', [ShopController::class, 'updateShop']);
     Route::delete('/shop', [ShopController::class, 'deleteShop']);

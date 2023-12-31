@@ -48,11 +48,32 @@ class CategoryController extends Controller
     {
         try {
             $categories = Category::all();
-            return response()->json(['message' => 'Categories retrieved successfully', 'categories' => $categories], 200);
+            return response()->json([
+                'status' => true,
+                'message' => 'Categories retrieved successfully', 
+                'categories' => $categories
+            ], 200);
         } catch (\Exception $e) {
             Log::error($e);
 
             return response()->json(['message' => 'Server error'], 500);
+        }
+    }
+
+   public function showHomeGategories(Request $request)
+    {
+        try {
+            $response = $this->getCategories($request);
+            if ($response -> original['status'] && isset($response->original['categories'])) {
+                $categories = $response->original['categories'];
+                return view('welcome', compact('categories'));
+            }
+        } catch (\Exception $e) {
+            Log::error($e);
+            return response()->json([
+                'status' => false,
+                'message' => 'Server error'
+            ], 500);
         }
     }
 
