@@ -14,8 +14,6 @@ use App\Mail\ResetPasswordMail;
 use Illuminate\Support\Facades\Log;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary; // Import Cloudinary facade
 
-
-
 class ProductController extends Controller
 {
     public function addProduct(Request $request)

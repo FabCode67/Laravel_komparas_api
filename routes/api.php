@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\ShopController;
+use App\Http\Controllers\Api\Cart;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Controller;
 
@@ -24,6 +25,9 @@ Route::post('/upload_image', [Controller::class, 'uploadImage']);
 Route::get('/products', [ProductController::class, 'getProducts']);
 Route::get('/product/{id}', [ProductController::class, 'getSingleProduct']);
 Route::get('/productsAndCat', [ProductController::class, 'showHomeProductAndCategories1']);
+Route::get('/cart', [Cart::class, 'getCart']);
+Route::post('/cart/add', [Cart::class, 'addToCart']);
+
 
 
 Route::post('/products/add', [ProductController::class, 'addProduct']);
