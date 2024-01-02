@@ -26,10 +26,10 @@ class ProductController extends Controller
                 'price' => 'required',
                 'description' => 'required',
                 'category_id' => 'required',
-                'shop_id' => 'required',
-                'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
+                'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+                'shop_ids' => 'required|array', // Ensure shop_ids is an array
             ]);
-
+    
             if ($validator->fails()) {
                 return response()->json([
                     'status' => false,
@@ -37,27 +37,26 @@ class ProductController extends Controller
                     'errors' => $validator->errors(),
                 ], 400);
             }
-
+    
             if (Product::where('name', $request->name)->exists()) {
                 return response()->json([
                     'status' => false,
                     'message' => 'Product with this name already exists',
                 ], 400);
             }
-
+    
             if ($request->hasFile('image')) {
                 // Upload profile picture to Cloudinary
                 $uploadedFile = $request->file('image');
                 $cloudinaryResponse = Cloudinary::upload($uploadedFile->getRealPath());
                 $cloudinaryUrl = $cloudinaryResponse->getSecurePath();
-
+    
                 $product = new Product([
                     'name' => $request->name,
                     'price' => $request->price,
                     'description' => $request->description,
                     'category_id' => $request->category_id,
-                    'shop_id' => $request->shop_id,
-                    'image' => $cloudinaryUrl
+                    'image' => $cloudinaryUrl,
                 ]);
                 $product->save();
             } else {
@@ -66,12 +65,16 @@ class ProductController extends Controller
                     'price' => $request->price,
                     'description' => $request->description,
                     'category_id' => $request->category_id,
-                    'shop_id' => $request->shop_id,
                     'image' => $request->image,
                 ]);
                 $product->save();
             }
-
+    
+            // Attach shops to the product
+            foreach ($request->shop_ids as $shop_id) {
+                $product->shops()->attach($shop_id);
+            }
+        
             return response()->json([
                 'status' => true,
                 'message' => 'Product added successfully',
@@ -79,13 +82,14 @@ class ProductController extends Controller
             ], 201);
         } catch (\Exception $e) {
             Log::error($e);
-
+    
             return response()->json([
                 'status' => false,
                 'message' => $e->getMessage(),
             ], 500);
         }
     }
+    
     public function getProducts(Request $request)
     {
         try {
@@ -217,7 +221,7 @@ class ProductController extends Controller
     {
         try {
             $product = Product::find($id);
-            $shopId = $product->shop_id;
+            $shopId = Product::with('shops')->find($id);
             $shop = Shops::find($shopId);
             $categoryId = $product->category_id;
             $categoryProducts = Product::where('category_id', $categoryId)->get();

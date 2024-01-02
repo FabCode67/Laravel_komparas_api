@@ -14,13 +14,14 @@
                         <div class='line w-full h-[1px] bg-blue-700'>
                         </div>
                         <div class='image flex w-full h-[25rem] p-2 rounded-sm'>
-                            <img src={{ $product['image'] }}
-                                alt='product' class='w-full h-full rounded-sm object-cover' />
+                            <img src={{ $product['image'] }} alt='product'
+                                class='w-full h-full rounded-sm object-cover' />
                         </div>
                         <div
                             class="relatedPictures flex  w-full justify-center items-center m-auto h-[7rem] space-x-2 p-2">
                             <div key={index} class="w-[7rem] h-full bg-gray-400 rounded-sm">
-                                <img src={{ $product['image'] }} alt='product' class='w-full h-full rounded-sm object-cover' /> 
+                                <img src={{ $product['image'] }} alt='product'
+                                    class='w-full h-full rounded-sm object-cover' />
                             </div>
                         </div>
                         <div class='description flex h-[60%] flex-col w-full'>
@@ -62,7 +63,7 @@
                                 <th class="p-2 py-3 font-[400] text-left">Address</th>
                             </tr>
                         </thead>
-                        
+                        @foreach($shop as $shop)
                         <tbody class="bg-white">
                             <tr class="border-b shadow border-grey-800 hover:bg-green-100 hover:cursor-pointer"
                                 key={index}>
@@ -90,15 +91,16 @@
                                 </td>
                             </tr>
                         </tbody>
+                        @endforeach
                     </table>
                 </div>
                 <p class='font-bold text-xl text-gray-700'>Related products</p>
                 <div class='grid laptop:grid-cols-2 desktop:grid-cols-2 tablet:grid-cols-1 phone:grid-cols-2 gap-2'>
-            @foreach($categoryProducts as $product)
+                    @foreach($categoryProducts as $product)
                     <div ref={drag} class='productCard bg-white rounded-md shadow-md cursor-pointer'>
                         <div class='w-full h-[200px]'>
-                            <img src="{{ $product['image'] }}"
-                                alt="product" class="w-full h-full rounded-sm object-cover" />
+                            <img src="{{ $product['image'] }}" alt="product"
+                                class="w-full h-full rounded-sm object-cover" />
                         </div>
                         <div class='w-full h-[fit] flex flex-col justify-start items-start p-3'>
                             <p class='text-sm font-normal text-gray-800'>
@@ -112,7 +114,7 @@
                             </p>
                         </div>
                     </div>
-            @endforeach
+                    @endforeach
                 </div>
             </div>
         </div>
