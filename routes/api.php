@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\ShopController;
+use App\Http\Controllers\Api\WishLists;
 use App\Http\Controllers\Api\Cart;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Controller;
@@ -27,9 +28,12 @@ Route::get('/product/{id}', [ProductController::class, 'getSingleProduct']);
 Route::get('/productsAndCat', [ProductController::class, 'showHomeProductAndCategories1']);
 Route::get('/cart', [Cart::class, 'getCart']);
 Route::post('/cart/add', [Cart::class, 'addToCart']);
-
-
-
+Route::get('/wishLists', [WishLists::class, 'getWishLists']);
+Route::post('/wishLists/add', [WishLists::class, 'addToWishLists']);
+Route::get('/products/search/{name}', [ProductController::class, 'search']);
+Route::get('/products/category/{id}', [ProductController::class, 'getProductsByCategory']);
+Route::get('/products/shop/{id}', [ProductController::class, 'getProductsByShop']);
+Route::get('/products/category/{id}/shop/{shop_id}', [ProductController::class, 'getProductsByCategoryAndShop']);
 Route::post('/products/add', [ProductController::class, 'addProduct']);
 //logout
 Route::post('/logout', [AuthController::class, 'logout']);
