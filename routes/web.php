@@ -5,6 +5,18 @@ use App\Http\Controllers\Api\WelcomeController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\AboutController;
+use App\Http\Controllers\DashboardProducts;
+use App\Http\Controllers\DashboardOrders;
+use App\Http\Controllers\DashboardCategories;
+use App\Http\Controllers\DashboardUsers;
+use App\Http\Controllers\DashboardProfile;
+use App\Http\Controllers\DashboardShops;
+
+
+
+
 
 
 Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
@@ -18,4 +30,14 @@ Route::get('/', [ProductController::class, 'showHomeProductAndCat' ])->name('wel
 Route::get('/product/{id}', [ProductController::class, 'showSingleProductPage' ])->name('singleProductPage');
 // Route::get('/', [ProductController::class, 'showHomeGategories'])->name('welcome');
 
+
+
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+Route::get('/about', [AboutController::class, 'index'])->name('about');
+Route::get('/dashboardProducts', [DashboardProducts::class, 'index'])->name('dashboardProducts');
+Route::get('/dashboardOrders', [DashboardOrders::class, 'index'])->name('dashboardOrders');
+Route::get('/dashboardCategories', [DashboardCategories::class, 'index'])->name('dashboardCategories');
+Route::get('/dashboardUsers', [DashboardUsers::class, 'index'])->name('dashboardUsers');
+Route::get('/dashboardProfile', [DashboardProfile::class, 'index'])->name('dashboardProfile');
+Route::get('/dashboardShops', [DashboardShops::class, 'index'])->name('dashboardShops');
 
