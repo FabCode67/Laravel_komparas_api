@@ -125,7 +125,7 @@
             </ul>
         </aside>
 
-        <section class="justify-center flex m-auto items-center text-center text-3xl font-medium">
+        <section class="">
             @yield('content')
         </section>
     </main>

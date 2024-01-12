@@ -30,6 +30,7 @@ Route::get('/', [ProductController::class, 'showHomeProductAndCat' ])->name('wel
 Route::get('/product/{id}', [ProductController::class, 'showSingleProductPage' ])->name('singleProductPage');
 // Route::get('/', [ProductController::class, 'showHomeGategories'])->name('welcome');
 
+use App\Http\Controllers\ExpensesController;
 
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -41,3 +42,4 @@ Route::get('/dashboardUsers', [DashboardUsers::class, 'index'])->name('dashboard
 Route::get('/dashboardProfile', [DashboardProfile::class, 'index'])->name('dashboardProfile');
 Route::get('/dashboardShops', [DashboardShops::class, 'index'])->name('dashboardShops');
 
+Route::get('/expenses', [ExpensesController::class, 'index'])->name('expenses');

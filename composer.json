@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.0.2",
+        "arielmejiadev/larapex-charts": "^7.0",
         "blade-ui-kit/blade-icons": "^1.5",
         "cloudinary-labs/cloudinary-laravel": "^2.0",
         "cloudinary/cloudinary_php": "^2",
