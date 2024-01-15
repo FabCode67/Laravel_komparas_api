@@ -16,6 +16,7 @@ use App\Http\Controllers\DashboardProfile;
 use App\Http\Controllers\DashboardShops;
 use App\Http\Controllers\Api\UsersController;
 use App\Http\Controllers\ExpensesController;
+use App\Http\Controllers\AddNewProductController;
 
 
 
@@ -44,3 +45,5 @@ Route::delete('users/{id}', [UsersController::class, 'destroy']);
 Route::delete('products/{id}', [ProductController::class, 'deleteProduct']);
 Route::delete('categories/{id}', [CategoryController::class, 'deleteCategory']);
 Route::delete('shops/{id}', [ShopController::class, 'deleteShop']);
+
+Route::get('/products/create', [AddNewProductController::class, 'create'])->name('products.create');
