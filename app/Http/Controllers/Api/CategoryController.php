@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Category;
+use App\Models\Category as Category;
 use Illuminate\Support\Facades\Log;
 
 class CategoryController extends Controller
@@ -43,28 +43,25 @@ class CategoryController extends Controller
             return response()->json(['message' => 'Server error'], 500);
         }
     }
-
-    public function getCategories(Request $request)
+    public function getCategories()
     {
         try {
             $categories = Category::all();
             return response()->json([
                 'status' => true,
-                'message' => 'Categories retrieved successfully', 
+                'message' => 'Categories retrieved successfully',
                 'categories' => $categories
             ], 200);
         } catch (\Exception $e) {
             Log::error($e);
-
             return response()->json(['message' => 'Server error'], 500);
         }
     }
-
-   public function showHomeGategories(Request $request)
+    public function showHomeGategories(Request $request)
     {
         try {
-            $response = $this->getCategories($request);
-            if ($response -> original['status'] && isset($response->original['categories'])) {
+            $response = $this->getCategories();
+            if ($response->original['status'] && isset($response->original['categories'])) {
                 $categories = $response->original['categories'];
                 return view('welcome', compact('categories'));
             }

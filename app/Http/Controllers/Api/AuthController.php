@@ -8,16 +8,12 @@ use App\Models\UsersModel as User;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
-
 use App\Mail\ResetPasswordMail;
 use Illuminate\Support\Facades\Log;
-use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary; // Import Cloudinary facade
-
-
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary; 
 class AuthController extends Controller
 {
     public function addUser(Request $request)
@@ -52,12 +48,10 @@ class AuthController extends Controller
             $hashedPassword = Hash::make($request->password);
 
             if ($request->hasFile('profile_picture')) {
-                // Upload profile picture to Cloudinary
                 $uploadedFile = $request->file('profile_picture');
                 $cloudinaryResponse = Cloudinary::upload($uploadedFile->getRealPath());
                 $cloudinaryUrl = $cloudinaryResponse->getSecurePath();
 
-                // Save user with Cloudinary URL
                 $user = User::create([
                     'first_name' => $request->first_name,
                     'last_name' => $request->last_name,

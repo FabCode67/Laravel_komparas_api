@@ -35,24 +35,25 @@
             </tr>
           </thead>
           <tbody class="w-full mt-3">
+            @foreach($shops as $shop)
               <tr class="w-full mt-3 shadow-sm" key={index}>
                 <td class="w-[10%] text-sm font-medium py-4 px-2">
-                  1
+                  {{$shop->id}}
                 </td>
                 <td class="w-[20%] text-sm font-medium py-4 px-2">
-                  Ikaze
+                  {{$shop->name}}
                 </td>
                 <td class="w-[20%] text-sm font-medium py-4 px-2">
-                    Description ...
+                    {{$shop->description}}
                 </td>
                 <td class="w-[20%] text-sm font-medium py-4 px-2">
-                  ikaze@gmail
+                    {{$shop->email}}
                 </td>
                 <td class="w-[20%] text-sm font-medium py-4 px-2">
-                    0780000000
+                    {{$shop->phone}}
                 </td>
                 <td class="w-[20%] text-sm font-medium py-4 px-2">
-                    Kigali
+                    {{$shop->location}}
                 </td>
                 <td class="w-[10%] text-sm font-medium py-4 px-2">
                   <div class="flex flex-row justify-between items-center">
@@ -79,6 +80,7 @@
                   </div>
                 </td>
               </tr>
+            @endforeach
           </tbody>
         </table>
       </div>

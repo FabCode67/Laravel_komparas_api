@@ -13,10 +13,8 @@ use App\Http\Controllers\DashboardCategories;
 use App\Http\Controllers\DashboardUsers;
 use App\Http\Controllers\DashboardProfile;
 use App\Http\Controllers\DashboardShops;
-
-
-
-
+use App\Http\Controllers\Api\UsersController;
+use App\Http\Controllers\ExpensesController;
 
 
 Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
@@ -28,10 +26,8 @@ Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/', [ProductController::class, 'showHomeProductAndCat' ])->name('welcome');
 Route::get('/product/{id}', [ProductController::class, 'showSingleProductPage' ])->name('singleProductPage');
+Route::get('/dashboardUsers', [UsersController::class, 'showUsers' ])->name('showUsers');
 // Route::get('/', [ProductController::class, 'showHomeGategories'])->name('welcome');
-
-use App\Http\Controllers\ExpensesController;
-
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 Route::get('/about', [AboutController::class, 'index'])->name('about');
@@ -41,5 +37,4 @@ Route::get('/dashboardCategories', [DashboardCategories::class, 'index'])->name(
 Route::get('/dashboardUsers', [DashboardUsers::class, 'index'])->name('dashboardUsers');
 Route::get('/dashboardProfile', [DashboardProfile::class, 'index'])->name('dashboardProfile');
 Route::get('/dashboardShops', [DashboardShops::class, 'index'])->name('dashboardShops');
-
 Route::get('/expenses', [ExpensesController::class, 'index'])->name('expenses');

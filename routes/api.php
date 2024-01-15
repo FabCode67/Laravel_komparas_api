@@ -9,16 +9,17 @@ use App\Http\Controllers\Api\WishLists;
 use App\Http\Controllers\Api\Cart;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\DashboardUsers;
+use App\Http\Controllers\DashboardShops;
 
 
 
-//public routes
 Route::post('/users', [AuthController::class, 'addUser']);
 Route::post('/login', [AuthController::class, 'login']);
-Route::get('/users', [UsersController::class, 'index']);
+Route::get('/dashboardUsers', [DashboardUsers::class, 'showAllUsers']);
 Route::post('/reset', [AuthController::class, 'resetPassword']);
 Route::post('/categories', [CategoryController::class, 'addCategory']);
-Route::get('/categories', [ProductController::class, 'getCategories']);
+Route::get('/categories', [CategoryController::class, 'getCategories']);
 Route::get('/categories/{id}', [CategoryController::class, 'getCategory']);
 Route::get('/shops', [ShopController::class, 'getShops']);
 Route::post('/shops/add', [ShopController::class, 'createShop']);
@@ -35,8 +36,10 @@ Route::get('/products/category/{id}', [ProductController::class, 'getProductsByC
 Route::get('/products/shop/{id}', [ProductController::class, 'getProductsByShop']);
 Route::get('/products/category/{id}/shop/{shop_id}', [ProductController::class, 'getProductsByCategoryAndShop']);
 Route::post('/products/add', [ProductController::class, 'addProduct']);
-//logout
 Route::post('/logout', [AuthController::class, 'logout']);
+Route::delete('users/{id}', [UsersController::class, 'destroy']);
+Route::get('/dashboardShops', [DashboardShops::class, 'showAllShops']);
+
 
 //protected routes
 Route::group(['middleware' => ['auth:sanctum']], function () {

@@ -1,7 +1,4 @@
-<!-- resources/views/home.blade.php -->
-
 @extends('dashboard')
-
 @section('content')
 <div>
       <div class="w-full flex justify-between">
@@ -32,12 +29,13 @@
             </tr>
           </thead>
           <tbody class="w-full mt-3">
+            @foreach($categories as $category)
               <tr class="w-full mt-3 shadow-sm" key={index}>
                 <td class="w-[10%] text-sm font-medium py-4 px-2">
-                  1
+                  {{$category->id}}
                 </td>
                 <td class="w-[20%] text-sm font-medium py-4 px-2">
-                 Category 1
+                  {{$category->name}}
                 </td>
                 <td class="w-[20%] text-sm font-medium py-4 px-2">
                     Description ...
@@ -67,6 +65,7 @@
                   </div>
                 </td>
               </tr>
+            @endforeach
           </tbody>
         </table>
       </div>

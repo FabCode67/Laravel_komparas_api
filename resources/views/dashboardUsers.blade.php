@@ -1,7 +1,6 @@
 <!-- resources/views/home.blade.php -->
 
 @extends('dashboard')
-
 @section('content')
 <div class="users flex flex-col w-full min-h-screen h-fit p-4 mt-2">
     <div class="w-full flex justify-between">
@@ -33,10 +32,10 @@
                 </tr>
             </thead>
             <tbody class="w-full mt-3">
-
+                @foreach($users as $user)
                 <tr class="w-full mt-3 shadow-sm">
                     <td class="w-[10%] text-sm font-medium py-2 px-2">
-                        1
+                        {{$user->id}}
                     </td>
                     <td class="w-[10%] text-sm font-medium py-2 px-2">
                         <div class="w-[50px] h-[50px] rounded-full bg-gray-400">
@@ -45,16 +44,16 @@
                         </div>
                     </td>
                     <td class="w-[20%] text-sm font-medium py-2 px-2">
-                        Fab Fabrice
+                        {{$user->first_name}} {{$user->last_name}}
                     </td>
                     <td class="w-[20%] text-sm font-medium py-2 px-2">
-                        fab@gmail.com
+                        {{$user->email}}
                     </td>
                     <td class="w-[20%] text-sm font-medium py-2 px-2">
-                        andim
+                        {{$user->role}}
                     </td>
                     <td class="w-[20%] text-sm font-medium py-2 px-2">
-                        enable
+                        {{$user->status}}
                     </td>
                     <td class="w-[10%] text-sm font-medium py-2 px-2">
                         <div class="flex flex-row justify-between items-center">
@@ -85,9 +84,12 @@
                         </div>
                     </td>
                 </tr>
+                @endforeach
+                <div class="pagination flex justify-end mt-4">
+                    {{ $users->links() }}
+                </div>
             </tbody>
         </table>
     </div>
 </div>
-
 @endsection

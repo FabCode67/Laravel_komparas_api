@@ -6,6 +6,8 @@ use App\Models\UsersModel as User;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
+
 
 class UsersController extends Controller
 {
@@ -46,6 +48,31 @@ class UsersController extends Controller
         return response()->json($data, 200);
     }
 
+    //show users
+
+   
+
+    public function showUsers(Request $request)
+    {
+        try{
+            $response = $this->show($request);
+            if($response->original['status']){
+                $Users = $response->original['Users'];
+                return view('dashboardUsers', compact('user'));
+            }else{
+                return response()->json([
+                    'status' => false,
+                    'message' => 'No users found',
+                ], 404);
+            }
+        }catch(\Exception $e){
+            Log::error($e);
+            return response()->json([
+                'status' => false,
+                'message' => 'Server error'
+            ], 500);
+        }
+    }
     public function update(Request $request, $id)
     {
         try {

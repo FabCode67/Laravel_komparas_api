@@ -34,27 +34,30 @@
                     </thead>
 
                     <tbody class="w-full mt-3">
+                        @foreach($products as $product)
                             <tr class="w-full mt-3 shadow-sm">
                                 <td class="w-[10%] text-sm font-medium py-2 px-2">
-                                    1
+                                    {{$product->id}}
                                 </td>
                                 <td class="w-[10%] text-sm font-medium py-2 px-2">
                                     <div class="w-[50px] h-[50px] rounded-full bg-gray-400">
-                                        <img src= "https://www.freeiconspng.com/uploads/no-image-icon-6.png"
+                                        <img 
+                                        src="{{ $product->image }}"
+                                        
                                             alt="product" class="w-full h-full rounded-sm object-cover" />
                                     </div>
                                 </td>
                                 <td class="w-[20%] text-sm font-medium py-2 px-2">
-                                    test
+                                    {{$product->name}}
                                 </td>
                                 <td class="w-[20%] text-sm font-medium py-2 px-2">
-                                    Thi is a test of ...
+                                    {{$product->description}}
                                 </td>
                                 <td class="w-[20%] text-sm font-medium py-2 px-2">
-                                    test
+                                    {{$product->category}}
                                 </td>
                                 <td class="w-[20%] text-sm font-medium py-2 px-2">
-                                    123
+                                    {{$product->price}}
                                 </td>
                                 <td class="w-[10%] text-sm font-medium py-2 px-2">
                                     <div class="flex flex-row justify-between items-center">
@@ -83,6 +86,7 @@
                                     </div>
                                 </td>
                             </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
