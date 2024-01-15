@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Log;
 
 class DashboardCategories extends Controller
 {
-
     public function getCategories()
     {
         try {
@@ -23,7 +22,6 @@ class DashboardCategories extends Controller
             return response()->json(['message' => 'Server error'], 500);
         }
     }
-
     public function index()
     {
         $response = $this->getCategories();

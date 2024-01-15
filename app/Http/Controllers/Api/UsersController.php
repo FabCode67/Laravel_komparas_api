@@ -29,6 +29,7 @@ class UsersController extends Controller
         ];
         return response()->json($data, 200);
     }
+
     public function show($id)
     {
         $user = User::find($id);
@@ -49,8 +50,6 @@ class UsersController extends Controller
     }
 
     //show users
-
-   
 
     public function showUsers(Request $request)
     {

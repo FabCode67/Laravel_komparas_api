@@ -27,7 +27,6 @@ class DashboardUsers extends Controller
         $response = $this->showAllUsers();
         if($response->original['status']){
             $users = $response->original['users'];
-            $users = User::paginate(10);
             return view('dashboardUsers', ['title' => 'users'], compact('users'));
         }else{
             return response()->json([

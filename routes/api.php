@@ -22,6 +22,7 @@ Route::post('/categories', [CategoryController::class, 'addCategory']);
 Route::get('/categories', [CategoryController::class, 'getCategories']);
 Route::get('/categories/{id}', [CategoryController::class, 'getCategory']);
 Route::get('/shops', [ShopController::class, 'getShops']);
+Route::delete('/shops/{id}', [ShopController::class, 'deleteShop']);
 Route::post('/shops/add', [ShopController::class, 'createShop']);
 Route::post('/upload_image', [Controller::class, 'uploadImage']);
 Route::get('/products', [ProductController::class, 'getProducts']);
@@ -34,6 +35,9 @@ Route::post('/wishLists/add', [WishLists::class, 'addToWishLists']);
 Route::get('/products/search/{name}', [ProductController::class, 'search']);
 Route::get('/products/category/{id}', [ProductController::class, 'getProductsByCategory']);
 Route::get('/products/shop/{id}', [ProductController::class, 'getProductsByShop']);
+Route::delete('/products/{id}', [ProductController::class, 'deleteProduct']);
+Route::delete('/categories/{id}', [ProductController::class, 'deleteCategory']);
+
 Route::get('/products/category/{id}/shop/{shop_id}', [ProductController::class, 'getProductsByCategoryAndShop']);
 Route::post('/products/add', [ProductController::class, 'addProduct']);
 Route::post('/logout', [AuthController::class, 'logout']);

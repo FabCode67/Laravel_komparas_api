@@ -5,15 +5,11 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Products as Product;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Shops;
-
-use App\Mail\ResetPasswordMail;
 use Illuminate\Support\Facades\Log;
-use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary; // Import Cloudinary facade
-
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary; 
 class ProductController extends Controller
 {
     public function addProduct(Request $request)
@@ -25,7 +21,7 @@ class ProductController extends Controller
                 'description' => 'required',
                 'category_id' => 'required',
                 'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-                'shop_ids' => 'required|array', // Ensure shop_ids is an array
+                'shop_ids' => 'required|array',
             ]);
     
             if ($validator->fails()) {
@@ -48,7 +44,6 @@ class ProductController extends Controller
                 $uploadedFile = $request->file('image');
                 $cloudinaryResponse = Cloudinary::upload($uploadedFile->getRealPath());
                 $cloudinaryUrl = $cloudinaryResponse->getSecurePath();
-    
                 $product = new Product([
                     'name' => $request->name,
                     'price' => $request->price,
@@ -68,7 +63,6 @@ class ProductController extends Controller
                 $product->save();
             }
     
-            // Attach shops to the product
             foreach ($request->shop_ids as $shop_id) {
                 $product->shops()->attach($shop_id);
             }
@@ -87,7 +81,6 @@ class ProductController extends Controller
             ], 500);
         }
     }
-    
     public function getProducts(Request $request)
     {
         try {
@@ -104,6 +97,37 @@ class ProductController extends Controller
                 'status' => false,
                 'message' => 'Server error'
             ], 500);
+        }
+    }
+
+    public function deleteProduct(Request $request, $id)
+    {
+        try {
+            $product = Product::find($id);
+            if (!$product) {
+                return response()->json(['message' => 'Product not found'], 404);
+            }
+            $product->delete();
+            return response()->json(['message' => 'Product deleted successfully'], 200);
+        } catch (\Exception $e) {
+            Log::error($e);
+
+            return response()->json(['message' => 'Server error'], 500);
+        }
+    }
+    public function updateProduct(Request $request, $id)
+    {
+        try {
+            $product = Product::find($id);
+            if (!$product) {
+                return response()->json(['message' => 'Product not found'], 404);
+            }
+            $product->update($request->all());
+            return response()->json(['message' => 'Product updated successfully', 'product' => $product], 200);
+        } catch (\Exception $e) {
+            Log::error($e);
+
+            return response()->json(['message' => 'Server error'], 500);
         }
     }
     public function showHomeProductAndCategories1(Request $request)
@@ -127,8 +151,6 @@ class ProductController extends Controller
             ], 500);
         }
     }
-
-
     public function showHomeProductAndCategories(Request $request)
     {
         try {
@@ -143,7 +165,6 @@ class ProductController extends Controller
             ], 500);
         }
     }
-
     public function getCategories(Request $request)
     {
         try {
@@ -168,6 +189,52 @@ class ProductController extends Controller
         }
     }
 
+    public function deleteProductPage(Request $request, $id)
+    {
+        try {
+            $request->route('id');
+            $id = $request->route('id');
+            $response = $this->deleteProduct($request, $id);
+            if ($response->original['status']) {
+                $products = $response->original['products'];
+                return view('dashboardProducts', compact('products'));
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'No products found',
+                ], 404);
+            }
+        } catch (\Exception $e) {
+            Log::error($e);
+            return response()->json([
+                'status' => false,
+                'message' => 'Server error'
+            ], 500);
+        }
+    }
+    public function updateProductPage(Request $request, $id)
+    {
+        try {
+            $request->route('id');
+            $id = $request->route('id');
+            $response = $this->updateProduct($request, $id);
+            if ($response->original['status']) {
+                $products = $response->original['products'];
+                return view('dashboardProducts', compact('products'));
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'No products found',
+                ], 404);
+            }
+        } catch (\Exception $e) {
+            Log::error($e);
+            return response()->json([
+                'status' => false,
+                'message' => 'Server error'
+            ], 500);
+        }
+    }
     public function showHomeProduct(Request $request)
     {
         try {
@@ -190,7 +257,6 @@ class ProductController extends Controller
             ], 500);
         }
     }
-
     public function showHomeProductAndCat(Request $request)
     {
         try {
@@ -213,8 +279,6 @@ class ProductController extends Controller
             ], 500);
         }
     }
-
-
     public function getSingleProduct(Request $request, $id)
     {
         try {

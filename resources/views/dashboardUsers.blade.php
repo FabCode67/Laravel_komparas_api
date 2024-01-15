@@ -39,7 +39,7 @@
                     </td>
                     <td class="w-[10%] text-sm font-medium py-2 px-2">
                         <div class="w-[50px] h-[50px] rounded-full bg-gray-400">
-                            <img src="https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png"
+                            <img src="{{$user->avatar}}"
                                 alt="user" class="w-full h-full rounded-full object-cover" />
                         </div>
                     </td>
@@ -73,23 +73,52 @@
                                         clipRule="evenodd" />
                                 </svg>
                             </button>
-                            <button class="shadow px-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-red-500" viewBox="0 0 20 20"
-                                    fill="currentColor">
-                                    <path fillRule="evenodd"
-                                        d="M5.293 3.293a1 1 0 011.414 0L10 7.586l3.293-3.293a1 1 0 111.414 1.414L11.414 9l3.293 3.293a1 1 0 01-1.414 1.414L10 10.414l-3.293 3.293a1 1 0 01-1.414-1.414L8.586 9 5.293 5.707a1 1 0 010-1.414z"
-                                        clipRule="evenodd" />
-                                </svg>
-                            </button>
+                            <form class="delete-user-form" action="{{ url('users/' . $user->id) }}" method="post">
+                                @csrf
+                                @method('DELETE')
+                                <button type="button" class="delete-user-btn shadow px-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-red-500"
+                                        viewBox="0 0 20 20" fill="currentColor">
+                                        <path fillRule="evenodd"
+                                            d="M5.293 3.293a1 1 0 011.414 0L10 7.586l3.293-3.293a1 1 0 111.414 1.414L11.414 9l3.293 3.293a1 1 0 01-1.414 1.414L10 10.414l-3.293 3.293a1 1 0 01-1.414-1.414L8.586 9 5.293 5.707a1 1 0 010-1.414z"
+                                            clipRule="evenodd" />
+                                    </svg>
+                                </button>
+                            </form>
                         </div>
                     </td>
                 </tr>
                 @endforeach
-                <div class="pagination flex justify-end mt-4">
-                    {{ $users->links() }}
-                </div>
             </tbody>
         </table>
     </div>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const deleteButtons = document.querySelectorAll('.delete-user-btn');
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const form = this.closest('.delete-user-form');
+                if (form) {
+                    const url = form.action;
+                    fetch(url, {
+                        method: 'DELETE',
+                        headers: {
+                            'X-CSRF-Token': form.querySelector('input[name="_token"]').value,
+                        },
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            alert(data.message);
+                            const userRow = this.closest('tr');
+                            userRow.remove();
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                        });
+                }
+            });
+        });
+    });
+</script>
 @endsection

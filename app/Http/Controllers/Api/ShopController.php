@@ -8,8 +8,6 @@ use Illuminate\Support\Facades\Log;
 use App\Models\Shops;
 use Illuminate\Support\Facades\Validator;
 
-
-
 class ShopController extends Controller
 {
     public function createShop(Request $request){

@@ -128,7 +128,7 @@ class CategoryController extends Controller
         }
     }
 
-    public function deleteCategory(Request $request, $id)
+    public function deleteCategory($id)
     {
         try {
             $category = Category::find($id);

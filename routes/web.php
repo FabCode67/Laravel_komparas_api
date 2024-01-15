@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\WelcomeController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\ShopController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\DashboardController;
@@ -15,6 +16,7 @@ use App\Http\Controllers\DashboardProfile;
 use App\Http\Controllers\DashboardShops;
 use App\Http\Controllers\Api\UsersController;
 use App\Http\Controllers\ExpensesController;
+
 
 
 Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
@@ -38,3 +40,7 @@ Route::get('/dashboardUsers', [DashboardUsers::class, 'index'])->name('dashboard
 Route::get('/dashboardProfile', [DashboardProfile::class, 'index'])->name('dashboardProfile');
 Route::get('/dashboardShops', [DashboardShops::class, 'index'])->name('dashboardShops');
 Route::get('/expenses', [ExpensesController::class, 'index'])->name('expenses');
+Route::delete('users/{id}', [UsersController::class, 'destroy']);
+Route::delete('products/{id}', [ProductController::class, 'deleteProduct']);
+Route::delete('categories/{id}', [CategoryController::class, 'deleteCategory']);
+Route::delete('shops/{id}', [ShopController::class, 'deleteShop']);
