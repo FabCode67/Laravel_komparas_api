@@ -30,6 +30,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/', [ProductController::class, 'showHomeProductAndCat' ])->name('welcome');
 Route::get('/product/{id}', [ProductController::class, 'showSingleProductPage' ])->name('singleProductPage');
 Route::get('/dashboardUsers', [UsersController::class, 'showUsers' ])->name('showUsers');
+Route::post('/add_product', [ProductController::class, 'addProduct'])->name('add_product');
 // Route::get('/', [ProductController::class, 'showHomeGategories'])->name('welcome');
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -46,4 +47,4 @@ Route::delete('products/{id}', [ProductController::class, 'deleteProduct']);
 Route::delete('categories/{id}', [CategoryController::class, 'deleteCategory']);
 Route::delete('shops/{id}', [ShopController::class, 'deleteShop']);
 
-Route::get('/products/create', [AddNewProductController::class, 'create'])->name('products.create');
+Route::get('/add_product', [AddNewProductController::class, 'create'])->name('add_product');

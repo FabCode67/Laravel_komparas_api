@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Log;
 
 class DashboardCategories extends Controller
 {
-    public function getCategories()
+     public function getCategories()
     {
         try {
             $categories = Category::all();

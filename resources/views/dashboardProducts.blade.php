@@ -19,9 +19,8 @@
             Print
         </button>
         <button class="shadow px-6">
-            <a href="{{ route('products.create') }}">Add New Product</a>
+            <a href="{{ route('add_product') }}">Add New Product</a>
         </button>
-
     </div>
 </div>
 <div class="users__table flex flex-col w-full rounded-md py-2 mt-2">

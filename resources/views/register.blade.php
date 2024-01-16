@@ -7,13 +7,10 @@
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/fontawesome.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css" />
-    
     @vite('resources/css/app.css')
 </head>
-
 <body class="bg-gray-100 w-full">
 <livewire:toasts />
-
     <div class="h-screen relative w-full">
 
         <div class="flex basis-full min-h-screen relative">

@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 document.addEventListener('DOMContentLoaded', function () {
     const signupForm = document.getElementById('signupForm');
-    const registerUrl = signupForm.dataset.registerUrl; // Access the data attribute
+    const registerUrl = signupForm.dataset.registerUrl;
 
     signupForm.addEventListener('submit', async function (event) {
         event.preventDefault();
