@@ -23,6 +23,5 @@ class Products extends Authenticatable
     public function shops()
     {
         return $this->belongsToMany(Shops::class, 'product_shop', 'product_id', 'shop_id');
-    }
-    
+    } 
 }

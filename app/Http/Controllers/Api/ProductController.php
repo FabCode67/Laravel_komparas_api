@@ -100,21 +100,22 @@ class ProductController extends Controller
         }
     }
 
-    public function deleteProduct(Request $request, $id)
-    {
-        try {
-            $product = Product::find($id);
-            if (!$product) {
-                return response()->json(['message' => 'Product not found'], 404);
-            }
-            $product->delete();
-            return response()->json(['message' => 'Product deleted successfully'], 200);
-        } catch (\Exception $e) {
-            Log::error($e);
-
-            return response()->json(['message' => 'Server error'], 500);
+    public function deleteProduct($id)
+{
+    try {
+        $product = Product::find($id);
+        if (!$product) {
+            return response()->json(['message' => 'Product not found'], 404);
         }
+        $product->shops()->detach();
+        $product->delete();
+        return response()->json(['message' => 'Product deleted successfully'], 200);
+    } catch (\Exception $e) {
+        Log::error($e);
+        return response()->json(['message' => 'Server error kkkkkk'], 500);
     }
+}
+
     public function updateProduct(Request $request, $id)
     {
         try {

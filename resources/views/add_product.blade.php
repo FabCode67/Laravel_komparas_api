@@ -5,7 +5,6 @@
 @section('content')
     <div class="w-full">
         <h2 class="text-2xl font-bold mb-4">Add New Product</h2>
-        <!-- Add your form for adding a new product here -->
         <form method="post" action="{{ url('products') }}" enctype="multipart/form-data">
             @csrf
             <div class="mb-4">
