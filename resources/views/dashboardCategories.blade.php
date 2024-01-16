@@ -1,11 +1,13 @@
 @extends('dashboard')
 
 @section('content')
+<meta name="csrf-token" content="{{ csrf_token() }}">
 <div>
     <div class="w-full flex justify-between">
         <div class="users flex flex-col w-fit rounded-md shadow p-1 px-2">
             <div class="users__day text-sm font-bold">Total Categories</div>
-            <div class="users__users text-sm font-medium text-blue-700 flex justify-center items-center text-center">20</div>
+            <div class="users__users text-sm font-medium text-blue-700 flex justify-center items-center text-center">20
+            </div>
         </div>
         <div class="users__list flex rounded-md space-x-3">
             <button class="shadow px-6">
@@ -31,33 +33,34 @@
             </thead>
             <tbody class="w-full mt-3">
                 @foreach($categories as $category)
-                    <tr class="w-full mt-3 shadow-sm">
-                        <td class="w-[10%] text-sm font-medium py-4 px-2">
-                            {{$category->id}}
-                        </td>
-                        <td class="w-[20%] text-sm font-medium py-4 px-2">
-                            {{$category->name}}
-                        </td>
-                        <td class="w-[20%] text-sm font-medium py-4 px-2">
-                            Description ...
-                        </td>
-                        <td class="w-[10%] text-sm font-medium py-4 px-2">
-                            <div class="flex flex-row justify-between items-center">
-                                <form class="delete-category-form" action="{{ url('categories/' . $category->id) }}" method="post">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="button" class="delete-category-btn shadow px-2">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-red-500" viewBox="0 0 20 20"
-                                            fill="currentColor">
-                                            <path fillRule="evenodd"
-                                                d="M5.293 3.293a1 1 0 011.414 0L10 7.586l3.293-3.293a1 1 0 111.414 1.414L11.414 9l3.293 3.293a1 1 0 01-1.414 1.414L10 10.414l-3.293 3.293a1 1 0 01-1.414-1.414L8.586 9 5.293 5.707a1 1 0 010-1.414z"
-                                                clipRule="evenodd" />
-                                        </svg>
-                                    </button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
+                <tr class="w-full mt-3 shadow-sm">
+                    <td class="w-[10%] text-sm font-medium py-4 px-2">
+                        {{$category->id}}
+                    </td>
+                    <td class="w-[20%] text-sm font-medium py-4 px-2">
+                        {{$category->name}}
+                    </td>
+                    <td class="w-[20%] text-sm font-medium py-4 px-2">
+                        Description ...
+                    </td>
+                    <td class="w-[10%] text-sm font-medium py-4 px-2">
+                        <div class="flex flex-row justify-between items-center">
+                            <form class="delete-category-form" action="{{ url('api/categories/' . $category->id) }}"
+                                method="post">
+                                @csrf
+                                @method('DELETE')
+                                <button type="button" class="delete-category-btn shadow px-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-red-500"
+                                        viewBox="0 0 20 20" fill="currentColor">
+                                        <path fillRule="evenodd"
+                                            d="M5.293 3.293a1 1 0 011.414 0L10 7.586l3.293-3.293a1 1 0 111.414 1.414L11.414 9l3.293 3.293a1 1 0 01-1.414 1.414L10 10.414l-3.293 3.293a1 1 0 01-1.414-1.414L8.586 9 5.293 5.707a1 1 0 010-1.414z"
+                                            clipRule="evenodd" />
+                                    </svg>
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
                 @endforeach
             </tbody>
         </table>
@@ -68,25 +71,32 @@
     document.addEventListener('DOMContentLoaded', function () {
         const deleteButtons = document.querySelectorAll('.delete-category-btn');
         deleteButtons.forEach(button => {
-            button.addEventListener('click', function () {
+            button.addEventListener('click', async function () {
                 const form = this.closest('.delete-category-form');
                 if (form) {
                     const url = form.action;
-                    fetch(url, {
-                        method: 'DELETE',
-                        headers: {
-                            'X-CSRF-Token': form.querySelector('input[name="_token"]').value,
-                        },
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log(data);
-                        const categoryRow = this.closest('tr');
-                        categoryRow.remove();
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                    });
+
+                    try {
+                        const response = await fetch(url, {
+                            method: 'DELETE',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Accept': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                            },
+                        });
+                        const data = await response.json();
+                        if (data.message) {
+                            alert('The ctegory has been deleted.');
+                            const productRow = this.closest('tr');
+                            productRow.remove();
+
+                        } else {
+                            alert('An error occurred while deleting the product.');
+                        }
+                    } catch (error) {
+                        alert(error)
+                    }
                 }
             });
         });

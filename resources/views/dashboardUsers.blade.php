@@ -2,6 +2,8 @@
 
 @extends('dashboard')
 @section('content')
+<meta name="csrf-token" content="{{ csrf_token() }}">
+
 <div class="users flex flex-col w-full min-h-screen h-fit p-4 mt-2">
     <div class="w-full flex justify-between">
         <div class="users flex flex-col w-fit rounded-md shadow p-1">
@@ -73,7 +75,7 @@
                                         clipRule="evenodd" />
                                 </svg>
                             </button>
-                            <form class="delete-user-form" action="{{ url('users/' . $user->id) }}" method="post">
+                            <form class="delete-user-form" action="{{ url('api/users/' . $user->id) }}" method="post">
                                 @csrf
                                 @method('DELETE')
                                 <button type="button" class="delete-user-btn shadow px-2">
@@ -97,25 +99,32 @@
     document.addEventListener('DOMContentLoaded', function () {
         const deleteButtons = document.querySelectorAll('.delete-user-btn');
         deleteButtons.forEach(button => {
-            button.addEventListener('click', function () {
+            button.addEventListener('click', async function () {
                 const form = this.closest('.delete-user-form');
                 if (form) {
                     const url = form.action;
-                    fetch(url, {
-                        method: 'DELETE',
-                        headers: {
-                            'X-CSRF-Token': form.querySelector('input[name="_token"]').value,
-                        },
-                    })
-                        .then(response => response.json())
-                        .then(data => {
-                            alert(data.message);
-                            const userRow = this.closest('tr');
-                            userRow.remove();
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
+
+                    try {
+                        const response = await fetch(url, {
+                            method: 'DELETE',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Accept': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                            },
                         });
+                        const data = await response.json();
+                        if (data) {
+                            alert('The product has been deleted.');
+                            const productRow = this.closest('tr');
+                            productRow.remove();
+
+                        } else {
+                            alert('An error occurred while deleting the product.');
+                        }
+                    } catch (error) {
+                        alert(error)
+                    }
                 }
             });
         });

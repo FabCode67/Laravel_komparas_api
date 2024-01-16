@@ -66,7 +66,6 @@ class ProductController extends Controller
             foreach ($request->shop_ids as $shop_id) {
                 $product->shops()->attach($shop_id);
             }
-        
             return response()->json([
                 'status' => true,
                 'message' => 'Product added successfully',

@@ -3,11 +3,13 @@
 @extends('dashboard')
 
 @section('content')
+<meta name="csrf-token" content="{{ csrf_token() }}">
 <div>
     <div class="w-full flex justify-between">
         <div class="users flex flex-col w-fit rounded-md shadow p-1 px-2">
             <div class="users__day text-sm font-bold">Total Shops</div>
-            <div class="users__users text-sm font-medium text-blue-700 flex justify-center items-center text-center">1000</div>
+            <div class="users__users text-sm font-medium text-blue-700 flex justify-center items-center text-center">
+                1000</div>
         </div>
         <div class="users__list flex rounded-md space-x-3">
             <button class="shadow px-6">
@@ -36,43 +38,43 @@
             </thead>
             <tbody class="w-full mt-3">
                 @foreach($shops as $shop)
-                    <tr class="w-full mt-3 shadow-sm">
-                        <td class="w-[10%] text-sm font-medium py-4 px-2">
-                            {{$shop->id}}
-                        </td>
-                        <td class="w-[20%] text-sm font-medium py-4 px-2">
-                            {{$shop->name}}
-                        </td>
-                        <td class="w-[20%] text-sm font-medium py-4 px-2">
-                            {{$shop->description}}
-                        </td>
-                        <td class="w-[20%] text-sm font-medium py-4 px-2">
-                            {{$shop->email}}
-                        </td>
-                        <td class="w-[20%] text-sm font-medium py-4 px-2">
-                            {{$shop->phone}}
-                        </td>
-                        <td class="w-[20%] text-sm font-medium py-4 px-2">
-                            {{$shop->location}}
-                        </td>
-                        <td class="w-[10%] text-sm font-medium py-4 px-2">
-                            <div class="flex flex-row justify-between items-center">
-                                <!-- Add a form for deletion with AJAX handling -->
-                                <form class="delete-shop-form" action="{{ url('shops/' . $shop->id) }}" method="post">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="button" class="delete-shop-btn shadow px-2">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-red-500" viewBox="0 0 20 20"
-                                            fill="currentColor">
-                                            <path fillRule="evenodd"
-                                                d="M5.293 3.293a1 1 0 011.414 0L10 7.586l3.293-3.293a1 1 0 111.414 1.414L11.414 9l3.293 3.293a1 1 0 01-1.414 1.414L10 10.414l-3.293 3.293a1 1 0 01-1.414-1.414L8.586 9 5.293 5.707a1 1 0 010-1.414z"
-                                                clipRule="evenodd" />
-                                        </svg>
-                                    </button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
+                <tr class="w-full mt-3 shadow-sm">
+                    <td class="w-[10%] text-sm font-medium py-4 px-2">
+                        {{$shop->id}}
+                    </td>
+                    <td class="w-[20%] text-sm font-medium py-4 px-2">
+                        {{$shop->name}}
+                    </td>
+                    <td class="w-[20%] text-sm font-medium py-4 px-2">
+                        {{$shop->description}}
+                    </td>
+                    <td class="w-[20%] text-sm font-medium py-4 px-2">
+                        {{$shop->email}}
+                    </td>
+                    <td class="w-[20%] text-sm font-medium py-4 px-2">
+                        {{$shop->phone}}
+                    </td>
+                    <td class="w-[20%] text-sm font-medium py-4 px-2">
+                        {{$shop->location}}
+                    </td>
+                    <td class="w-[10%] text-sm font-medium py-4 px-2">
+                        <div class="flex flex-row justify-between items-center">
+                            <!-- Add a form for deletion with AJAX handling -->
+                            <form class="delete-shop-form" action="{{ url('api/shops/' . $shop->id) }}" method="post">
+                                @csrf
+                                @method('DELETE')
+                                <button type="button" class="delete-shop-btn shadow px-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-red-500"
+                                        viewBox="0 0 20 20" fill="currentColor">
+                                        <path fillRule="evenodd"
+                                            d="M5.293 3.293a1 1 0 011.414 0L10 7.586l3.293-3.293a1 1 0 111.414 1.414L11.414 9l3.293 3.293a1 1 0 01-1.414 1.414L10 10.414l-3.293 3.293a1 1 0 01-1.414-1.414L8.586 9 5.293 5.707a1 1 0 010-1.414z"
+                                            clipRule="evenodd" />
+                                    </svg>
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
                 @endforeach
             </tbody>
         </table>
@@ -82,35 +84,33 @@
 <!-- Add JavaScript code for AJAX handling -->
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        // Add event listeners for all delete buttons
         const deleteButtons = document.querySelectorAll('.delete-shop-btn');
         deleteButtons.forEach(button => {
-            button.addEventListener('click', function () {
-                // Find the parent form and submit it via AJAX
+            button.addEventListener('click', async function () {
                 const form = this.closest('.delete-shop-form');
                 if (form) {
                     const url = form.action;
+                    try {
+                        const response = await fetch(url, {
+                            method: 'DELETE',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Accept': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                            },
+                        });
+                        const data = await response.json();
+                        if (data.message) {
+                            alert('The product has been deleted.');
+                            const productRow = this.closest('tr');
+                            productRow.remove();
 
-                    // Perform AJAX request
-                    fetch(url, {
-                        method: 'DELETE',
-                        headers: {
-                            'X-CSRF-Token': form.querySelector('input[name="_token"]').value,
-                        },
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        // Handle the response data as needed
-                        console.log(data);
-                        // Update the UI or display a message without refreshing the page
-                        // For example, remove the deleted shop row
-                        const shopRow = this.closest('tr');
-                        shopRow.remove();
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        // Handle errors if needed
-                    });
+                        } else {
+                            alert('An error occurred while deleting the product.');
+                        }
+                    } catch (error) {
+                        alert(error)
+                    }
                 }
             });
         });

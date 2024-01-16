@@ -43,6 +43,7 @@ Route::post('/products/add', [ProductController::class, 'addProduct']);
 Route::post('/logout', [AuthController::class, 'logout']);
 Route::delete('users/{id}', [UsersController::class, 'destroy']);
 Route::get('/dashboardShops', [DashboardShops::class, 'showAllShops']);
+Route::delete('users/{id}', [UsersController::class, 'destroy']);
 
 
 //protected routes
@@ -50,7 +51,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('users/search/{name}', [UsersController::class, 'search']);
     Route::get('users/{id}', [UsersController::class, 'show']);
     Route::put('users/{id}', [UsersController::class, 'update']);
-    Route::delete('users/{id}', [UsersController::class, 'destroy']);
+    // Route::delete('users/{id}', [UsersController::class, 'destroy']);
     Route::get('users/search/{name}', [UsersController::class, 'search']);
     Route::get('user/profile', [UsersController::class, 'profile']);
     Route::post('/categories', [CategoryController::class, 'addCategory']);
