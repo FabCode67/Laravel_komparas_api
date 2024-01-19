@@ -12,9 +12,9 @@
             <i class="fas fa-heart"></i>
             <span class="icon-badge">9+</span>
         </button>
-        <button class='relative bg-white'>
-            <i class="fas fa-shopping-cart"></i>
-            <span class="icon-badge">9+</span>
+        <button class='relative bg-white' >
+        <span class="icon-badge">1+</span>
+            <a href="{{ route('cart') }}"> <i class="fas fa-shopping-cart"></i></a>
         </button>
        <!-- ... other HTML code ... -->
 @if(Session::has('user') && Session::has('token'))

@@ -9,7 +9,8 @@
         <div class="users flex flex-col w-fit rounded-md shadow p-1 px-2">
             <div class="users__day text-sm font-bold">Total Shops</div>
             <div class="users__users text-sm font-medium text-blue-700 flex justify-center items-center text-center">
-                1000</div>
+                {{$shops->count()}}
+        </div>
         </div>
         <div class="users__list flex rounded-md space-x-3">
             <button class="shadow px-6">

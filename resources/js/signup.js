@@ -32,8 +32,11 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 document.addEventListener('DOMContentLoaded', function () {
+    const imageField = document.getElementById('imageField');
+    const fileInput = document.getElementById('profile_picture');
+    const imagePreview = document.querySelector('.image-preview');
     const signupForm = document.getElementById('signupForm');
-    const registerUrl = signupForm.dataset.registerUrl;
+    const loginUrl = signupForm.dataset.loginUrl;
 
     signupForm.addEventListener('submit', async function (event) {
         event.preventDefault();
@@ -52,7 +55,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 console.log(responseData.message);
                 alert(responseData.message);
                 setTimeout(() => {
-                    window.location.href = `{{ route('login') }}`;
+                    window.location.href = loginUrl;  // Use the login URL
                 }, 2000);
             } else {
                 // Handle other scenarios if needed

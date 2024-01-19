@@ -27,7 +27,7 @@ class AuthController extends Controller
                 'confirm_password' => 'required|same:password',
                 'role' => 'optional',
                 'address' => 'optional',
-                'profile_picture' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
+                'avatar' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
             ]);
 
             if ($validator->fails()) {
@@ -47,8 +47,8 @@ class AuthController extends Controller
 
             $hashedPassword = Hash::make($request->password);
 
-            if ($request->hasFile('profile_picture')) {
-                $uploadedFile = $request->file('profile_picture');
+            if ($request->hasFile('avatar')) {
+                $uploadedFile = $request->file('avatar');
                 $cloudinaryResponse = Cloudinary::upload($uploadedFile->getRealPath());
                 $cloudinaryUrl = $cloudinaryResponse->getSecurePath();
 
@@ -62,7 +62,6 @@ class AuthController extends Controller
                     'role' => 'buyer',
                     'status' => 'enabled',
                     'avatar' => $cloudinaryUrl,
-                    'profile_picture' => $cloudinaryUrl,
                     'api_token' => Str::random(60),
                 ]);
 
@@ -77,35 +76,31 @@ class AuthController extends Controller
                     'confirm_password' => $request->confirm_password,
                     'address' => $request->address,
                     'role' => $request->role,
-                    'avatar' => 'default.png',
                     'status' => 'enabled',
                     'api_token' => Str::random(60),
                 ]);
 
                 $token = $user->createToken('myapptoken')->plainTextToken;
             }
-
             return response()->json([
                 'status' => true,
                 'message' => 'User added successfully',
                 'user' => $user,
                 'token'=> $token,
             ], 201);
-
-            // Remove the unreachable code block
-            // toast()
-            //     ->success('You earned a cookie! 🍪');
-
         } catch (\Exception $e) {
             Log::error('Error adding user: ' . $e->getMessage());
             Log::error('File: ' . $e->getFile());
             Log::error(''. $e->getLine());
             Log::error('Line: ' . $e->getLine());
+            echo $e->getMessage();
 
-            return response()->json([
-                'status' => false,
-                'message' => 'An error occurred while adding the user',
-                'error' => $e->getMessage(),
+            return response()->json(
+                [
+                    'status' => false,
+                    'message' => 'An error occurred while adding the user',
+                    'error' => $e->getMessage(),
+
             ], 500);
         }
     }

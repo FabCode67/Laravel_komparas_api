@@ -17,8 +17,10 @@ use App\Http\Controllers\DashboardShops;
 use App\Http\Controllers\Api\UsersController;
 use App\Http\Controllers\ExpensesController;
 use App\Http\Controllers\AddNewProductController;
-
-
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\TrackOrder;
 
 Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
@@ -46,5 +48,9 @@ Route::delete('users/{id}', [UsersController::class, 'destroy']);
 Route::delete('products/{id}', [ProductController::class, 'deleteProduct']);
 Route::delete('categories/{id}', [CategoryController::class, 'deleteCategory']);
 Route::delete('shops/{id}', [ShopController::class, 'deleteShop']);
+Route::get('/cart', [CartController::class, 'index'])->name('cart');
+Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
+Route::get('/order', [OrderController::class, 'index'])->name('order');
+Route::get('/trackOrder', [TrackOrder::class, 'index'])->name('trackOrder');
 
 Route::get('/add_product', [AddNewProductController::class, 'create'])->name('add_product');

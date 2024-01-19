@@ -92,7 +92,7 @@
                                             id="imageField">
 
                                             <input type="file" accept="image/png, image/jpeg" id="profile_picture"
-                                                name="profile_picture" style="display: none;" />
+                                                name="avatar" style="display: none;" />
                                             <div class="image-preview"></div>
                                         </div>
                                         <button type="button"

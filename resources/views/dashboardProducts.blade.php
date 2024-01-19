@@ -8,7 +8,8 @@
 <div class="w-full flex justify-between">
     <div class="users flex flex-col w-fit rounded-md shadow p-1 px-2">
         <div class="users__day text-sm font-bold">Total Products</div>
-        <div class="users__users text-sm font-medium text-blue-700 flex justify-center items-center text-center">1000
+        <div class="users__users text-sm font-medium text-blue-700 flex justify-center items-center text-center">
+            {{$products->count()}}
         </div>
     </div>
     <div class="users__list flex rounded-md space-x-3">
@@ -38,10 +39,13 @@
         </thead>
 
         <tbody class="w-full mt-3">
+            @php
+            $i = 1;
+            @endphp
             @foreach($products as $product)
             <tr class="w-full mt-3 shadow-sm">
                 <td class="w-[10%] text-sm font-medium py-2 px-2">
-                    {{$product->id}}
+                    {{$i++}}
                 </td>
                 <td class="w-[10%] text-sm font-medium py-2 px-2">
                     <div class="w-[50px] h-[50px] rounded-full bg-gray-400">

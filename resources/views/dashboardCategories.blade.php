@@ -6,7 +6,8 @@
     <div class="w-full flex justify-between">
         <div class="users flex flex-col w-fit rounded-md shadow p-1 px-2">
             <div class="users__day text-sm font-bold">Total Categories</div>
-            <div class="users__users text-sm font-medium text-blue-700 flex justify-center items-center text-center">20
+            <div class="users__users text-sm font-medium text-blue-700 flex justify-center items-center text-center">
+                {{$categories->count()}}
             </div>
         </div>
         <div class="users__list flex rounded-md space-x-3">
@@ -32,10 +33,14 @@
                 </tr>
             </thead>
             <tbody class="w-full mt-3">
+                @php
+                $i=1
+                @endphp
+
                 @foreach($categories as $category)
                 <tr class="w-full mt-3 shadow-sm">
                     <td class="w-[10%] text-sm font-medium py-4 px-2">
-                        {{$category->id}}
+                        {{$i++}}
                     </td>
                     <td class="w-[20%] text-sm font-medium py-4 px-2">
                         {{$category->name}}
