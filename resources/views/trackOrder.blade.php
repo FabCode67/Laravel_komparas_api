@@ -13,7 +13,6 @@
         <div class="bg-white p-4 rounded shadow-md">
             <h2 class="text-xl font-semibold mb-4">Track Your Order</h2>
 
-            <!-- Order Tracking Form -->
             <form>
                 <label for="order_number" class="block text-sm font-medium text-gray-600">Order Number</label>
                 <div class="flex items-center space-x-4">
