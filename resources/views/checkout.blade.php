@@ -37,11 +37,9 @@
                 </form>
             </div>
 
-            <!-- Order Summary -->
             <div class="mb-4">
                 <h3 class="text-lg font-medium mb-2">Order Summary</h3>
                 <ul class="divide-y divide-gray-200">
-                    <!-- Sample Product -->
                     <li class="flex justify-between items-center py-2">
                         <div class="flex items-center space-x-2">
                             <img src="https://placekitten.com/32/32" alt="Product" class="w-6 h-6 rounded-md">
@@ -50,7 +48,6 @@
                         <span class="text-gray-700 text-sm">$19.99</span>
                     </li>
 
-                    <!-- Total -->
                     <li class="flex justify-between items-center py-2">
                         <span class="font-medium text-sm">Total</span>
                         <span class="text-blue-700 font-semibold text-sm">$19.99</span>
@@ -58,7 +55,6 @@
                 </ul>
             </div>
 
-            <!-- Shipping Information -->
             <div class="mb-4">
                 <h3 class="text-lg font-medium mb-2">Shipping Information</h3>
                 <form>
@@ -81,7 +77,6 @@
                 </form>
             </div>
 
-            <!-- Payment Information -->
             <div class="mb-4">
                 <h3 class="text-lg font-medium mb-2">Payment Information</h3>
                 <form>
@@ -104,8 +99,6 @@
                     </div>
                 </form>
             </div>
-
-            <!-- Place Order Button -->
             <div class="flex justify-end">
                 <button
                     class="bg-blue-700 text-white py-2 px-4 rounded-md hover:bg-blue-600 text-sm">

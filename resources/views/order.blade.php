@@ -16,10 +16,7 @@
     <div class="container mx-auto min-h-screen">
         <div class="bg-white p-4 rounded shadow">
             <h2 class="text-xl font-semibold mb-4 mt-32">Orders</h2>
-
-            <!-- Order List -->
             <div>
-                <!-- Single Order Card -->
                 <div class="bg-gray-50 p-4 rounded-md mb-4">
                     <div class="flex justify-between items-center">
                         <div class="flex items-center space-x-4">
@@ -36,7 +33,6 @@
                     </div>
 
                     <ul class="mt-4 space-y-2">
-                        <!-- Order Items -->
                         <li class="flex items-center space-x-4">
                             <div class="w-16 h-16 bg-gray-300 rounded-md overflow-hidden">
                                 <img src="https://placekitten.com/150/150" alt="Product Image"
