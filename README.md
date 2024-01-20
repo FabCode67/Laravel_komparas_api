@@ -1,3 +1,27 @@
+# PROJECT NAME
+### PRODUCT KOMPARATOR (KOMPARAS)
+
+## DESCRIPTION:
+Product comparator (komparas) it compare diffrent products from different shops and allow a user(buyer) to choose one of product according to his or her needs
+
+## HOW TO RUN APP MANUALLY
+
+- git clone repo
+
+  ### install dependences 
+- run npm install
+- run the php composer
+  
+   ### to run app
+- open your xampp
+- run migration
+- npm run
+- php artisan serve
+
+
+
+
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
